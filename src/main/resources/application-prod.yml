@@ -1,0 +1,5 @@
+server:
+  ssl:
+    enabled: true
+    certificate: classpath:keystore.p12
+  port: 8443

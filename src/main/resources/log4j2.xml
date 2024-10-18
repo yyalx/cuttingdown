@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration monitorInterval="30">
+    <properties>
+        <property name="traceId">${env:pod_name}</property>
+        <property name="userHome">${env:user.home}</property>
+        <property name="app_name">${env:app_name}</property>
+        <property name="component_name">${env:component_name}</property>
+        <property name="env">${env:env}</property>
+        <property name="node_name">${env:node_name}</property>
+        <property name="pod_name">${env:pod_name}</property>
+        <property name="pod_namespace">${env:pod_namespace}</property>
+        <property name="pattern">
+            {"@timestamp":"%d{yyyy-MM-dd HH:mm:ss.SSS}", "message":"%replace{%.-15000msg}{[\n\"\\]}{}", "logger_name":"%logger{50}:%line", "thread_name":"%thread", "level":"%-5level"}%n
+        </property>
+        <property name="LOG_FILE" value="${LOG_FILE:-${LOG_PATH:-${LOG_TEMP:-${java.io.tmpdir:-/tmp}}}/spring.log}"/>
+    </properties>
+
+    <appenders>
+        <console name="CONSOLE-LOG" target="SYSTEM_OUT">
+            <PatternLayout pattern="${pattern}"/>
+        </console>
+
+        <RollingFile name="FILE-LOG" fileName="${LOG_FILE}" filePattern="${LOG_FILE}.%d{yyyy-MM-dd}.%i.gz">
+            <PatternLayout pattern="${pattern}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="10 MB"/>
+            </Policies>
+        </RollingFile>
+    </appenders>
+
+    <loggers>
+        <root level="INFO">
+            <appender-ref ref="CONSOLE-LOG"/>
+            <appender-ref ref="FILE-LOG"/>
+        </root>
+    </loggers>
+</configuration>

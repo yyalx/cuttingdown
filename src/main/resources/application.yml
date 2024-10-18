@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: cuttingdown
+  datasource:
+    url: jdbc:sqlserver://localhost:1433;database=cuttingdown;encrypt=true;sslProtocol=TLSv1.2;trustServerCertificate=true
+    username: sa
+    password: Admin123
+  profiles:
+    active: ${env}
